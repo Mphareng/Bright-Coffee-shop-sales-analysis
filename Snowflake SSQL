@@ -1,0 +1,266 @@
+select* from coffee_shop_sales;
+
+select distinct store_location
+from coffee_shop_sales;
+
+--count of transaction id in store location
+select store_location,
+       count(transaction_id)
+from coffee_shop_sales
+group by store_location;
+
+--Total number of items sold
+select store_location,
+       sum(transaction_qty)
+from coffee_shop_sales
+Group by store_location;
+
+--Total revenue per locationCURRENT_DATE
+select store_location,
+       sum(transaction_qty*unit_price) as Revenue
+from coffee_shop_sales
+Group by store_location;
+
+--Revenue per store location-------CHECK
+select transaction_id,
+       transaction_date,
+       transaction_time,
+       transaction_qty,
+       store_id,
+       store_location,
+       product_id,
+       unit_price,
+       product_category,
+       product_type,
+       product_detail,      
+       count(transaction_id),
+       sum (transaction_qty*unit_price)
+from coffee_shop_sales
+group by all;
+
+--Time buckets 
+Select distinct min(transaction_time)
+from coffee_shop_sales;
+
+Select distinct max(transaction_time)
+from coffee_shop_sales;
+
+
+select store_id,
+       store_location,
+      case
+      when transaction_time between '06:00:00' and '12:00:00' then 'Morning'
+      when transaction_time between '12:00:01' and '17:00:00' then 'Afternoon'
+      when transaction_time between '17:000:01' and '21:00:00' then 'Evening'
+      End as Time_bucket
+from coffee_shop_sales;
+
+--Grouping by location
+select count (store_id) as number_of_sales,
+       store_location,
+      case
+      when transaction_time between '06:00:00' and '12:00:00' then 'Morning'
+      when transaction_time between '12:00:01' and '17:00:00' then 'Afternoon'
+      when transaction_time between '17:000:01' and '21:00:00' then 'Evening'
+      End as Time_bucket
+from coffee_shop_sales
+Group by all;
+
+drop table coffee_shop_sales;
+
+--Grouping by Product category, product type and product detail
+select store_location,
+       product_category,
+       product_detail,
+       product_type,
+       count (store_id) as number_of_sales,
+       sum (transaction_qty*unit_price),
+      case
+      when transaction_time between '06:00:00' and '12:00:00' then 'Morning'
+      when transaction_time between '12:00:01' and '17:00:00' then 'Afternoon'
+      when transaction_time between '17:000:01' and '21:00:00' then 'Evening'
+      End as Time_bucket
+from coffee_shop_sales
+Group by all;
+
+--Daily buckets
+
+select distinct transaction_date
+from coffee_shop_sales;
+
+Select transaction_date,
+       case 
+       when transaction_date between '2023-01-01' and '2023-01-01' then 'Weekend'
+       when transaction_date between '2023-01-07' and '2023-01-08' then 'Weekend'
+       when transaction_date between '2023-01-14' and '2023-01-15' then 'Weekend'
+       when transaction_date between '2023-01-28' and '2023-01-29' then 'Weekend'
+       when transaction_date between '2023-02-04' and '2023-02-05' then 'Weekend'
+       when transaction_date between '2023-02-11' and '2023-02-12' then 'Weekend'
+       when transaction_date between '2023-02-18' and '2023-02-19' then 'Weekend'
+       when transaction_date between '2023-02-25' and '2023-02-26' then 'Weekend'
+       when transaction_date between '2023-03-04' and '2023-03-04' then 'Weekend'
+       when transaction_date between '2023-03-11' and '2023-03-12' then 'Weekend'
+       when transaction_date between '2023-03-18' and '2023-03-19' then 'Weekend'
+       when transaction_date between '2023-03-25' and '2023-03-26' then 'Weekend'
+       when transaction_date between '2023-04-01' and '2023-04-02' then 'Weekend'
+       when transaction_date between '2023-04-08' and '2023-04-09' then 'Weekend'
+       when transaction_date between '2023-04-15' and '2023-04-16' then 'Weekend'
+       when transaction_date between '2023-04-22' and '2023-04-23' then 'Weekend'
+       when transaction_date between '2023-04-29' and '2023-04-30' then 'Weekend'
+       when transaction_date between '2023-05-06' and '2023-05-07' then 'Weekend'
+       when transaction_date between '2023-05-13' and '2023-05-14' then 'Weekend'
+       when transaction_date between '2023-05-20' and '2023-05-21' then 'Weekend'
+       when transaction_date between '2023-05-27' and '2023-05-28' then 'Weekend'
+       when transaction_date between '2023-06-03' and '2023-06-04' then 'Weekend'
+       when transaction_date between '2023-06-10' and '2023-06-11' then 'Weekend'
+       when transaction_date between '2023-06-17' and '2023-06-18' then 'Weekend'
+       when transaction_date between '2023-06-25' and '2023-06-26' then 'Weekend'
+
+
+       
+       when transaction_date between '2023-01-02' and '2023-01-06' then 'Midweek'
+       when transaction_date between '2023-01-09' and '2023-01-13' then 'Midweek'
+       when transaction_date between '2023-01-16' and '2023-01-20' then 'Midweek'
+       when transaction_date between '2023-01-23' and '2023-01-27' then 'Midweek'
+       when transaction_date between '2023-01-30' and '2023-01-31' then 'Midweek'
+       when transaction_date between '2023-02-01' and '2023-02-03' then 'Midweek'
+       when transaction_date between '2023-02-06' and '2023-02-10' then 'Midweek'
+       when transaction_date between '2023-02-13' and '2023-02-17' then 'Midweek'
+       when transaction_date between '2023-02-20' and '2023-02-24' then 'Midweek'
+       when transaction_date between '2023-02-27' and '2023-02-08' then 'Midweek'
+       when transaction_date between '2023-03-01' and '2023-03-03' then 'Midweek'
+       when transaction_date between '2023-03-06' and '2023-03-10' then 'Midweek'
+       when transaction_date between '2023-03-13' and '2023-03-17' then 'Midweek'
+       when transaction_date between '2023-03-20' and '2023-03-24' then 'Midweek'
+       when transaction_date between '2023-03-27' and '2023-03-31' then 'Midweek'
+       when transaction_date between '2023-04-03' and '2023-04-07' then 'Midweek'
+       when transaction_date between '2023-04-10' and '2023-04-14' then 'Midweek'
+       when transaction_date between '2023-04-17' and '2023-04-21' then 'Midweek'
+       when transaction_date between '2023-04-24' and '2023-04-28' then 'Midweek'
+       when transaction_date between '2023-05-01' and '2023-05-05' then 'Midweek'
+       when transaction_date between '2023-05-08' and '2023-05-12' then 'Midweek'
+       when transaction_date between '2023-05-15' and '2023-05-19' then 'Midweek'
+       when transaction_date between '2023-05-22' and '2023-05-26' then 'Midweek'
+       when transaction_date between '2023-05-29' and '2023-05-31' then 'Midweek'
+       when transaction_date between '2023-06-01' and '2023-06-02' then 'Midweek'
+       when transaction_date between '2023-06-05' and '2023-06-09' then 'Midweek'
+       when transaction_date between '2023-06-12' and '2023-06-16' then 'Midweek'
+       when transaction_date between '2023-06-19' and '2023-06-23' then 'Midweek'
+       when transaction_date between '2023-06-26' and '2023-06-30' then 'Midweek'
+
+       End as Weekly_sales
+       
+from coffee_shop_sales;
+
+
+--New dataset for visualizations
+
+ select transaction_id,
+       transaction_date,
+       transaction_time,
+       transaction_qty,
+       store_id,
+       store_location,
+       product_id,
+       unit_price,
+       product_category,
+       product_type,
+       product_detail,      
+       count(transaction_id) as number_of_sales,
+       count (product_id) as unique_products_sold,
+       sum(transaction_qty*unit_price) as total_amount,
+      case
+      when transaction_time between '06:00:00' and '10:00:00' then 'Breakfast'
+      when transaction_time between '10:00:00' and '12:00:00' then 'Brunch'
+      when transaction_time between '12:000:00' and '15:00:00' then 'Lunch'
+      when transaction_time between '17:000:00' and '21:00:00' then 'Dinner'
+      Else 'LightBites'
+      End as Time_slots,
+
+      case
+      when transaction_time between '06:00:00' and '12:00:00' then 'Morning'
+      when transaction_time between '12:00:01' and '17:00:00' then 'Afternoon'
+      when transaction_time between '17:000:01' and '21:00:00' then 'Evening'
+      End as Time_bucket,
+
+       case 
+       when transaction_date between '2023-01-01' and '2023-01-01' then 'Weekend'
+       when transaction_date between '2023-01-07' and '2023-01-08' then 'Weekend'
+       when transaction_date between '2023-01-14' and '2023-01-15' then 'Weekend'
+       when transaction_date between '2023-01-28' and '2023-01-29' then 'Weekend'
+       when transaction_date between '2023-02-04' and '2023-02-05' then 'Weekend'
+       when transaction_date between '2023-02-11' and '2023-02-12' then 'Weekend'
+       when transaction_date between '2023-02-18' and '2023-02-19' then 'Weekend'
+       when transaction_date between '2023-02-25' and '2023-02-26' then 'Weekend'
+       when transaction_date between '2023-03-04' and '2023-03-04' then 'Weekend'
+       when transaction_date between '2023-03-11' and '2023-03-12' then 'Weekend'
+       when transaction_date between '2023-03-18' and '2023-03-19' then 'Weekend'
+       when transaction_date between '2023-03-25' and '2023-03-26' then 'Weekend'
+       when transaction_date between '2023-04-01' and '2023-04-02' then 'Weekend'
+       when transaction_date between '2023-04-08' and '2023-04-09' then 'Weekend'
+       when transaction_date between '2023-04-15' and '2023-04-16' then 'Weekend'
+       when transaction_date between '2023-04-22' and '2023-04-23' then 'Weekend'
+       when transaction_date between '2023-04-29' and '2023-04-30' then 'Weekend'
+       when transaction_date between '2023-05-06' and '2023-05-07' then 'Weekend'
+       when transaction_date between '2023-05-13' and '2023-05-14' then 'Weekend'
+       when transaction_date between '2023-05-20' and '2023-05-21' then 'Weekend'
+       when transaction_date between '2023-05-27' and '2023-05-28' then 'Weekend'
+       when transaction_date between '2023-06-03' and '2023-06-04' then 'Weekend'
+       when transaction_date between '2023-06-10' and '2023-06-11' then 'Weekend'
+       when transaction_date between '2023-06-17' and '2023-06-18' then 'Weekend'
+       when transaction_date between '2023-06-25' and '2023-06-26' then 'Weekend'
+
+
+       
+       when transaction_date between '2023-01-02' and '2023-01-06' then 'Midweek'
+       when transaction_date between '2023-01-09' and '2023-01-13' then 'Midweek'
+       when transaction_date between '2023-01-16' and '2023-01-20' then 'Midweek'
+       when transaction_date between '2023-01-23' and '2023-01-27' then 'Midweek'
+       when transaction_date between '2023-01-30' and '2023-01-31' then 'Midweek'
+       when transaction_date between '2023-02-01' and '2023-02-03' then 'Midweek'
+       when transaction_date between '2023-02-06' and '2023-02-10' then 'Midweek'
+       when transaction_date between '2023-02-13' and '2023-02-17' then 'Midweek'
+       when transaction_date between '2023-02-20' and '2023-02-24' then 'Midweek'
+       when transaction_date between '2023-02-27' and '2023-02-08' then 'Midweek'
+       when transaction_date between '2023-03-01' and '2023-03-03' then 'Midweek'
+       when transaction_date between '2023-03-06' and '2023-03-10' then 'Midweek'
+       when transaction_date between '2023-03-13' and '2023-03-17' then 'Midweek'
+       when transaction_date between '2023-03-20' and '2023-03-24' then 'Midweek'
+       when transaction_date between '2023-03-27' and '2023-03-31' then 'Midweek'
+       when transaction_date between '2023-04-03' and '2023-04-07' then 'Midweek'
+       when transaction_date between '2023-04-10' and '2023-04-14' then 'Midweek'
+       when transaction_date between '2023-04-17' and '2023-04-21' then 'Midweek'
+       when transaction_date between '2023-04-24' and '2023-04-28' then 'Midweek'
+       when transaction_date between '2023-05-01' and '2023-05-05' then 'Midweek'
+       when transaction_date between '2023-05-08' and '2023-05-12' then 'Midweek'
+       when transaction_date between '2023-05-15' and '2023-05-19' then 'Midweek'
+       when transaction_date between '2023-05-22' and '2023-05-26' then 'Midweek'
+       when transaction_date between '2023-05-29' and '2023-05-31' then 'Midweek'
+       when transaction_date between '2023-06-01' and '2023-06-02' then 'Midweek'
+       when transaction_date between '2023-06-05' and '2023-06-09' then 'Midweek'
+       when transaction_date between '2023-06-12' and '2023-06-16' then 'Midweek'
+       when transaction_date between '2023-06-19' and '2023-06-23' then 'Midweek'
+       when transaction_date between '2023-06-26' and '2023-06-30' then 'Midweek'
+       Else 'Not categorised'
+
+       End as Weekly_Bucket,
+
+       case 
+       when transaction_date between '2023-01-01' and '2023-01-31' then 'January'
+       when transaction_date between '2023-02-01' and '2023-02-28' then 'February'
+       when transaction_date between '2023-03-01' and '2023-03-31' then 'March'
+       when transaction_date between '2023-04-01' and '2023-04-30' then 'April'
+       when transaction_date between '2023-05-01' and '2023-05-31' then 'May'
+       when transaction_date between '2023-06-01' and '2023-05-30' then 'June'
+
+       Else 'Not categorised'
+
+       End as Monthly_buckets
+       
+from coffee_shop_sales
+Group by all;
+
+
+ 
+       
+   
